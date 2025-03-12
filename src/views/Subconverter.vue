@@ -56,7 +56,8 @@
                     <div slot="suffix" style="width: 10px;">:</div>
                   </el-input>
                   <el-input v-model="param.value" placeholder="自定义参数内容">
-                      <el-button slot="suffix" type="text" icon="el-icon-delete" style="margin-right: 5px" @click="customParams.splice(i, 1)"/>
+                    <el-button slot="suffix" type="text" icon="el-icon-delete" style="margin-right: 5px"
+                      @click="customParams.splice(i, 1)" />
                   </el-input>
                 </el-form-item>
 
@@ -180,7 +181,7 @@
       <div slot="title">
         解析 Subconverter 链接
       </div>
-      <el-form label-position="left" :inline="true" >
+      <el-form label-position="left" :inline="true">
         <el-form-item prop="uploadConfig" label="订阅链接：" label-width="85px">
           <el-input v-model="loadConfig" style="width: 565px"></el-input>
         </el-form-item>
@@ -227,65 +228,83 @@ export default {
           ssd: "ssd",
           sssub: "sssub",
           ssr: "ssr",
-          ClashR: "clashr",          
+          ClashR: "clashr",
           V2Ray: "v2ray",
           Trojan: "trojan",
           Surge3: "surge&ver=3",
         },
-        backendOptions: [{ value: "http://127.0.0.1:25500/sub?" }],
+        customBackend: {
+          "nameless13提供": "https://www.nameless13.com",
+          "subconverter作者提供": "https://sub.xeton.dev",
+          "sub-web作者提供": "https://api.wcc.best",
+          "sub作者&lhie1提供": "https://api.dler.io",
+          "猫猫冲家里云【纯ipv6】": "https://ddns.yokinanya.icu:5552/subconverter"
+        },
+        backendOptions: [
+          { value: "https://www.nameless13.com" },
+          { value: "https://sub.xeton.dev" },
+          { value: "https://api.wcc.best" },
+          { value: "https://api.dler.io" },
+          { value: "https://ddns.yokinanya.icu:5552/subconverter" },
+        ],
         remoteConfig: [
           {
-            label: "universal",
+            label: "ACL4SSR Online",
             options: [
               {
-                label: "No-Urltest",
+                label: "ACL4SSR默认",
                 value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/universal/no-urltest.ini"
+                  "config/ACL4SSR_Online.ini"
               },
               {
-                label: "Urltest",
+                label: "ACL4SSR去广告",
                 value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/universal/urltest.ini"
-              }
-            ]
-          },
-          {
-            label: "customized",
-            options: [
-              {
-                label: "Maying",
-                value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/maying.ini"
+                  "config/ACL4SSR_Online_AdblockPlus.ini"
               },
               {
-                label: "Ytoo",
+                label: "ACL4SSR无自动测速",
                 value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/ytoo.ini"
+                  "config/ACL4SSR_Online_NoAuto.ini"
               },
               {
-                label: "FlowerCloud",
+                label: "ACL4SSR无广告拦截",
                 value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/flowercloud.ini"
+                  "config/ACL4SSR_Online_NoReject.ini"
               },
               {
-                label: "Nexitally",
+                label: "ACL4SSR精简版",
                 value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/nexitally.ini"
+                  "config/ACL4SSR_Online_Mini.ini"
               },
               {
-                label: "SoCloud",
+                label: "ACL4SSR精简去广告",
                 value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/socloud.ini"
+                  "config/ACL4SSR_Online_Mini_AdblockPlus.ini"
               },
               {
-                label: "ARK",
+                label: "ACL4SSR精简多重模式",
                 value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/ark.ini"
+                  "config/ACL4SSR_Online_Mini_MultiMode.ini"
               },
               {
-                label: "ssrCloud",
+                label: "ACL4SSR精简版带港美日国家",
                 value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/ssrcloud.ini"
+                  "config/ACL4SSR_Online_Mini_MultiCountry.ini"
+              },
+              {
+                label: "ACL4SSR全分组",
+                value:
+                  "config/ACL4SSR_Online_Full.ini"
+              },
+              {
+                label: "ACL4SSR全分组多模式",
+                value:
+                  "config/ACL4SSR_Online_Full_MultiMode.ini"
+              },
+              {
+                label: "ACL4SSR全分组重度用户",
+                value:
+                  "config/ACL4SSR_Online_Full_Netflix.ini"
               }
             ]
           },
@@ -301,6 +320,19 @@ export default {
                 label: "Basic(仅GEOIP CN + Final)",
                 value:
                   "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/special/basic.ini"
+              }
+            ]
+          },
+          {
+            label: "猫猫冲 家里云专用",
+            options: [
+              {
+                label: "猫猫冲-默认",
+                value: "config/staryokina_online.ini"
+              },
+              {
+                label: "猫猫冲-服务器",
+                values: "config/staryokina_online_server.ini"
               }
             ]
           }
@@ -408,7 +440,7 @@ export default {
       const url = "surge://install-config?url=";
       window.open(url + this.customSubUrl);
     },
-    addCustomParam(){
+    addCustomParam() {
       this.customParams.push({
         name: "",
         value: "",
