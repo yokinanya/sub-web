@@ -27,10 +27,15 @@
 
               <div v-if="advanced === '2'">
                 <el-form-item label="后端地址:">
-                  <el-autocomplete style="width: 100%" v-model="form.customBackend" :fetch-suggestions="backendSearch"
-                    placeholder="动动小手，（建议）自行搭建后端服务。例：http://127.0.0.1:25500/sub?">
-                    <el-button slot="append" @click="gotoGayhub" icon="el-icon-link">前往项目仓库</el-button>
-                  </el-autocomplete>
+                  <el-select v-model="form.customBackend" placeholder="动动小手，（建议）自行搭建后端服务。例：http://127.0.0.1:25500/sub"
+                    style="width: 100%" filterable>
+                    <el-option v-for="item in options.backendOptions" :key="item.value" :value="item.value">
+                      <span>{{ item.label }} </span>
+                      <span style="color: #909399; margin-left: 8px; font-size: 12px">
+                        {{ item.value }}
+                      </span>
+                    </el-option>
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="远程配置:">
                   <el-select v-model="form.remoteConfig" allow-create filterable placeholder="请选择" style="width: 100%">
@@ -233,19 +238,13 @@ export default {
           Trojan: "trojan",
           Surge3: "surge&ver=3",
         },
-        customBackend: {
-          "nameless13提供": "https://www.nameless13.com",
-          "subconverter作者提供": "https://sub.xeton.dev",
-          "sub-web作者提供": "https://api.wcc.best",
-          "sub作者&lhie1提供": "https://api.dler.io",
-          "猫猫冲家里云【纯ipv6】": "https://ddns.yokinanya.icu:5552/subconverter"
-        },
         backendOptions: [
-          { value: "https://www.nameless13.com" },
-          { value: "https://sub.xeton.dev" },
-          { value: "https://api.wcc.best" },
-          { value: "https://api.dler.io" },
-          { value: "https://ddns.yokinanya.icu:5552/subconverter" },
+          { label: "nameless13提供", value: "https://www.nameless13.com" },
+          { label: "subconverter作者提供", value: "https://sub.xeton.dev" },
+          { label: "sub-web作者提供", value: "https://api.wcc.best" },
+          { label: "sub作者&lhie1提供", value: "https://api.dler.io" },
+          { label: "猫猫冲家里云(IPV6 Only)", value: "https://ddns.yokinanya.icu:5552/subconverter" },
+          { label: "localhost", value: "http://127.0.0.1:25500" }
         ],
         remoteConfig: [
           {
@@ -349,12 +348,12 @@ export default {
         emoji: true,
         nodeList: false,
         extraset: false,
-        sort: false,
+        sort: true,
         udp: false,
         tfo: false,
-        scv: true,
+        scv: false,
         fdn: false,
-        expand: true,
+        expand: false,
         appendType: false,
         insert: false, // 是否插入默认订阅的节点，对应配置项 insert_url
         new_name: true, // 是否使用 Clash 新字段
@@ -399,6 +398,8 @@ export default {
   },
   mounted() {
     this.form.clientType = "clash";
+    this.form.customBackend = "https://sub.xeton.dev";
+    this.form.remoteConfig = this.options.remoteConfig[0].options[0].value;
     this.notify();
     this.getBackendVersion();
   },
@@ -452,10 +453,9 @@ export default {
         return false;
       }
 
-      let backend =
-        this.form.customBackend === ""
-          ? defaultBackend
-          : this.form.customBackend;
+      let backend = this.form.customBackend === ""
+        ? defaultBackend
+        : this.form.customBackend + '/sub?';
 
       let sourceSub = this.form.sourceSubUrl;
       sourceSub = sourceSub.replace(/(\n|\r|\n\r)/g, "|");
